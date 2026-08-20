@@ -1,5 +1,5 @@
 produtos = []
-
+sistemaAtivo = True
 class Produto:
     def __init__(self, nome, preco):
         self.codigo = len(produtos) + 1
@@ -13,7 +13,7 @@ class Produto:
 
 def cadastrar():
     try:
-        nome = input("Insira o nome do produto: ").strip()
+        nome = input("\nInsira o nome do produto: ").strip()
         if not nome:
             raise ValueError("O nome não pode ser vazio.")
         
@@ -27,10 +27,45 @@ def cadastrar():
     except ValueError as e:
         print(e)
 
-produtos.append(Produto("1", 1))
-
 def listar():
     for produto in produtos:
+        print("\n")
         produto.exibir()
         
-listar()
+def comprar():
+    try:
+        codigo = int(input("Insira o nome do produto: "))
+        if not codigo || codigo <= 0:
+            raise ValueError("O código deve ser um número inteiro positivo.")
+
+        qtde = int(input("Insira a quantidade de produtos que serão comprados: "))
+        if not qtde || qtde < 0:
+            raise ValueError("A quantidade deve ser um número positivo.")
+
+        produto = produtos[codigo - 1]
+        total = qtde * produto.preco
+        
+        print("\n")
+        produto.exibir()
+        print(f"Preço total: R${total}")
+
+        if total >= 100:
+            final = total * 0.9
+            print("Desconto de 10% disponível")
+            print(f"Valor final: R${final}")
+        else:
+            print("Sem desconto")
+    except ValueError as e:
+        print(e)
+
+while sistemaAtivo:
+    try:
+        print("1- Cadastrar Produtos")
+        print("2- Listar Produtos")
+        print("3- Comprar Produtos")
+        print("4- Finalizar Programa")
+        opcao = int(input("O que deseja fazer? "))
+        if not opcao || opcao < 1 || opcao > 4:
+            raise ValueError("A opção deve ser um número inteiro positivo entre 1 e 4.")
+    except ValueError as e:
+        print(e)
