@@ -1,5 +1,6 @@
 produtos = []
 sistemaAtivo = True
+
 class Produto:
     def __init__(self, nome, preco):
         self.codigo = len(produtos) + 1
@@ -34,15 +35,19 @@ def listar():
         
 def comprar():
     try:
-        codigo = int(input("Insira o nome do produto: "))
-        if not codigo || codigo <= 0:
+        codigo = int(input("Insira o código do produto: "))
+        if not codigo or codigo <= 0:
             raise ValueError("O código deve ser um número inteiro positivo.")
-
-        qtde = int(input("Insira a quantidade de produtos que serão comprados: "))
-        if not qtde || qtde < 0:
-            raise ValueError("A quantidade deve ser um número positivo.")
+        if codigo > len(produtos):
+            print("Produto inexistente")
+            return
 
         produto = produtos[codigo - 1]
+
+        qtde = int(input("Insira a quantidade de produtos que serão comprados: "))
+        if not qtde or qtde < 0:
+            raise ValueError("A quantidade deve ser um número positivo.")
+
         total = qtde * produto.preco
         
         print("\n")
@@ -60,12 +65,23 @@ def comprar():
 
 while sistemaAtivo:
     try:
-        print("1- Cadastrar Produtos")
-        print("2- Listar Produtos")
-        print("3- Comprar Produtos")
-        print("4- Finalizar Programa")
+        print("1. Cadastrar Produtos")
+        print("2. Listar Produtos")
+        print("3. Comprar Produtos")
+        print("4. Finalizar Programa")
         opcao = int(input("O que deseja fazer? "))
-        if not opcao || opcao < 1 || opcao > 4:
+        if not opcao or opcao < 1 or opcao > 4:
             raise ValueError("A opção deve ser um número inteiro positivo entre 1 e 4.")
+        
+        match(opcao):
+            case 1:
+                cadastrar()
+            case 2:
+                listar()
+            case 3:
+                comprar()
+            case 4:
+                print("Finalizando programa...")
+                sistemaAtivo = False
     except ValueError as e:
         print(e)
